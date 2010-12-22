@@ -1,0 +1,4 @@
+Creates a template config file for the let-me-think gem.
+To generate config file should be used the following command:
+rails 2.x: script/generate questionnaire_config
+rails 3: rails generate questionnaire_config
