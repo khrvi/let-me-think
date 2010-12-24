@@ -1,4 +1,5 @@
 require 'digest/sha2'
+require 'questionnaire'
 # Controller level system that actually does the work of creating and validating
 # the captcha via filters, and also providing helpers for determining if the captcha was already
 # passed or if a previous captcha attempt failed.
@@ -23,6 +24,7 @@ module LetMeThink
     #raise_if_salt_isnt_set
     #return true if captcha_passed?
     #debug_brain_buster { "Initializing the brain_buster object."}
+    Questionnaire.new
     @captcha = find_question
   end
   
@@ -36,7 +38,7 @@ module LetMeThink
     return captcha_failure unless (params[:captcha_answer])
       
     captcha = @captcha = find_brain_buster
-    is_success = Questionnaire.attempt?(params[:captcha_answer], encryptcookies[:captcha_status]))
+    is_success = Questionnaire.attempt?(params[:captcha_answer], encryptcookies[:captcha_status])
     #debug_brain_buster { is_success ? "Captcha successfully passed." : "Captcha failed - #{ captcha.inspect }" }
     # set_captcha_status(is_success)
     return is_success ? captcha_success : captcha_failure
