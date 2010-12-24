@@ -5,14 +5,14 @@ class Questionnaire
   
   def initialize
     file = File.join(Rails.root, "config/questionnaire.yml")
-    config
+    @@config ||= YAML::load(File.open(file))
   rescue
     raise "Config file is not found"
   end
   
-  def config
-    @config ||= YAML::load(File.open(file))
-  end
+  # def config
+  #     @config ||= YAML::load(File.open(file))
+  #   end
 
   # Attempt to answer a captcha, returns true if the answer is correct.
   def self.attempt?(string, answer)
@@ -33,14 +33,14 @@ class Questionnaire
 
   def self.find_random
     #find(:first, :conditions => ['locale = ?', I18n.locale.to_s], :order => random_function)
-    questions = config['questions'][I18n.locale.to_s]
+    questions = @@config['questions'][I18n.locale.to_s]
     q = questions[rand(questions.size)]
-    interval = (config['interval'] || 50).to_i
+    interval = (@@config['interval'] || 50).to_i
     first_number = rand(interval)
     last_number = rand(interval)
     result = first_number + last_number
-    q.gsub('$1', first_number.to_english)
-    q.gsub('$2', first_number.to_english)
+    q.gsub('$1', HumaneInteger.new(first_number).to_english)
+    q.gsub('$2', HumaneInteger.new(last_number).to_english)
     [q, result]
   end
 
