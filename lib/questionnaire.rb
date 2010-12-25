@@ -30,11 +30,11 @@ class Questionnaire
     questions = @@config['questions'][I18n.locale.to_s]
     q = questions.keys[rand(questions.size)].dup
     interval = (@@config['interval'] || 50).to_i
-    formula = questions[q]
+    formula = questions[q].dup
     first_number = rand(interval)
     last_number = rand(interval)
-    formula.gsub!('$1', first_number)
-    formula.gsub!('$2', last_number)
+    formula.gsub!('$1', first_number.to_s)
+    formula.gsub!('$2', last_number.to_s)
     result = eval(formula)
     q.gsub!('$1', HumaneInteger.new(first_number).to_english)
     q.gsub!('$2', HumaneInteger.new(last_number).to_english)

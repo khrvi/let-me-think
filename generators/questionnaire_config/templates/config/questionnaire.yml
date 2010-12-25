@@ -4,3 +4,6 @@ questions:
   en:
     - {'What is $1 plus $2?': '$1+$2'}
     - {'$1 times $2 is what?': '$1*$2'}
+    - {'What is the number before $1?': '$1-1'}
+    - {'$1 divided by $2 is what?': '$1/$2'}
+    - {'What is $1 minus $2?': '$1-$2'}
