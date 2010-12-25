@@ -28,11 +28,14 @@ class Questionnaire
 
   def self.find_random
     questions = @@config['questions'][I18n.locale.to_s]
-    q = questions[rand(questions.size)]
+    q = questions.keys[rand(questions.size)].dup
     interval = (@@config['interval'] || 50).to_i
+    formula = questions[q]
     first_number = rand(interval)
     last_number = rand(interval)
-    result = first_number + last_number
+    formula.gsub!('$1', first_number)
+    formula.gsub!('$2', last_number)
+    result = eval(formula)
     q.gsub!('$1', HumaneInteger.new(first_number).to_english)
     q.gsub!('$2', HumaneInteger.new(last_number).to_english)
     [q, result]
